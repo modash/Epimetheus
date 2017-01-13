@@ -1,0 +1,59 @@
+###Epimetheus version 1.0
+
+##Compile executables
+#Run make.sh script to compile C files and to check R dependencies
+
+chmod 777 make.sh
+sudo ./make.sh (use OS appropriate adiminisrator previlige)
+
+Dependencies;
+perl, bash commands (sort, grep and paste), gcc and R
+R libraries: limma
+
+#Usage:
+Tool:	Epimetheus v1.0
+Usage:  perl Epiemetheus_v1.0.pl -c <config.file> -o <outputFolder> <[12345]|all> [options]
+
+General options:
+--config | -c <file>	=  Configuration File with filenames. Refer example. [Mandatory]
+--outputFolder | -o <string>	=  Output folder name. [Mandatory]
+--storeTempFiles | -s 	=  Don't delete the temporary files.
+
+Modules:
+--all	=  Runs all the steps in one go
+-1	=  Count Reads for all samples
+  --binSize | -b <integer>	=  Window size; Should be multiples of hundred; [100]
+  --genomeInfo | -g <file>	=  Chromosome sizes of corresponding genome build.
+  --extReads | -e <int>		=  Extend read length to mean fragment size [150]
+  --keepClonaReads | -k  	=  Keep PCR duplicate reads in counting. By default it is omitted.
+  --noMiddlePos			=  By default middle position of the extended read will be used for read counts. Use this option to skip and use full reads for counting but normalized BED file cannot be generated with this option as one read will be counted in multiple bins.
+  --noIntegrityCheck		=  Skips the integrity check step (check the BED file integrity before counting step). Use this only when the files have been already subjected to integrity check by Epimetheus.
+--2	=  Apply quantile normalization on results from step 1 among samples and z-score normalization on quantile normalized results individiually such that different targets (H3K4me3, H3K27me) can be comparable.
+--3	=  Make MA plots between raw and normalized counts
+--4	=  Make meta-profile plots on TSS centric or Genebody.
+           Output will be generated in the the filename from --plotref inside given -o folder.
+  --plotType <genebody|tss|target>	=  Plot whole genebody instead of flankings from TSS.
+  --plotDataFrom <raw|norm|normZ>	=  Meta-profile plots should be plotted 11on raw or quantile 						   normalized or Zscore normalized values.
+  --plotRef <file>			=  A bed file.
+  --left <integer>			=  5' end flanking region size for plot
+  --right <integer>			=  3' end flanking region size for plot
+  --pointsGenebody <integer>)		=  Number of bins for genebody plot
+--5	=  Generate normalized BED file from quantile normalized RCI counts.
+
+
+*****PLEASE REFER SAMPLE FILES IN DEMO FOLDER FOR FILES' FORMAT*****
+
+##Running Epimetheus
+#To run the whole pipeline in one go
+perl Epiemetheus_v1.0.pl -c demo/config.file -o Epimetheus_output --all -b 100 -e 150 -g demo/chrInfo_hg18.txt --left 1500 --right 1500 --plotRef demo/RefGRCh36_hg18_TSSStart_v2.bed
+
+#To run particular step
+#Eg1:
+perl Epiemetheus_v1.0.pl -c demo/config.file -o Epimetheus_output --4 --left 1500 --right 1500 --plotRef demo/RefGRCh36_hg18_TSSStart_v2.bed --matType raw
+#Eg2:
+perl Epiemetheus_v1.0.pl -c demo/config.file -o Epimetheus_output --1 -g demo/chrInfo_hg18.txt -b 100 -e 150
+
+##Tips and tricks
+1. When there is an error in any particular step, as long as the output folder is kept as such, one can run from that particular step.
+2. If there is any "span is too small" error in plotting steps, open the respective R file and increase the span value.
+3. One can rerun any particualr step as long as the previous step output files are available in output folder.
