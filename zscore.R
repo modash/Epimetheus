@@ -1,0 +1,7 @@
+args <- commandArgs(trailingOnly = TRUE)
+print(args)
+raw<-read.table(args[1],sep="\t",header=F,skip=1)
+znorm<-scale(raw[,4],center=T, scale=T)
+writeLines(paste("track type=bedGraph name=",args[3],"-Znorm",sep=""),args[2])
+write.table(cbind(raw[,1:3],znorm),args[2],sep="\t",row.names=F,col.names=F,quote=FALSE,append=T)
+rm(list=ls())

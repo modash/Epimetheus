@@ -1,0 +1,12 @@
+args <- commandArgs(trailingOnly = TRUE)
+c<-read.table(args[1],sep="\t",header=T)
+nn<-ncol(c)
+c1<-c[,2:nn]
+c1m<-colMeans(c1)
+cl1<-loess(c1m~c(1:(nn-1)),span=0.1)
+xl <- seq(min(c(1:(nn-1))),max(c(1:(nn-1))), (max(c(1:(nn-1))) - min(c(1:(nn-1))))/(nn-1))
+zz<-max(c1m)
+png(args[2])
+plot(xl,predict(cl1,xl),xlab=args[4],ylab=paste(args[5]," RCI",sep=""),main=args[5], col="black",type="l",lwd=2,ylim=c(0,zz))
+dev.off()
+rm(list=ls())
