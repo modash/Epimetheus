@@ -676,13 +676,13 @@ if($opFolder eq "" || $config eq "")
 	usage();
 }
 
-if($makeMetaprofilePlots && $plotRef)
+if($makeMetaprofilePlots && $plotRef eq "")
 {
 	print STDERR "\n\n***PLEASE PROVIDE --plotRef TO RUN THIS MODULE***\n\n";
 	usage();
 }
 
-if($countReads && $genomeInfo)
+if($countReads && $genome eq "")
 {
 	print STDERR "\n\n***PLEASE PROVIDE --genomeInfo <file> TO RUN THIS MODULE***\n\n";
 	usage();
