@@ -508,7 +508,6 @@ foreach $hist (sort keys %fileList)
 
 sub countReads {
 print STDOUT "\n====Count Reads module====\n";
-if($genome==0 || $genome eq ""){ print STDERR "\n\n***PLEASE PROVIDE REFERENCE CHROMSOME SIZE FILE IN --genomeInfo OPTION***\n\n"; exit();}
 foreach $hist (sort keys %fileList)
 {
 	$time=localtime();
