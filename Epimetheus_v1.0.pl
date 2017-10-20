@@ -675,7 +675,7 @@ if($opFolder eq "" || $config eq "")
 	usage();
 }
 
-if($makeMetaprofilePlots && $plotRef eq "")
+if($makeMetaprofilePlots && $reg eq "")
 {
 	print STDERR "\n\n***PLEASE PROVIDE --plotRef TO RUN THIS MODULE***\n\n";
 	usage();
